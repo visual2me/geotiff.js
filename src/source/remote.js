@@ -55,7 +55,7 @@ class RemoteSource extends BaseSource {
       headers: {
         ...this.headers,
         Range: `bytes=${slices
-          .map(({ offset, length }) => `${offset}-${offset + length}`)
+          .map(({ offset, length }) => `${offset}-${offset + length - 1}`)
           .join(',')
         }`,
       },
@@ -79,7 +79,7 @@ class RemoteSource extends BaseSource {
       const first = [{
         data,
         offset: start,
-        length: end - start,
+        length: end - start + 1,
       }];
 
       if (slices.length > 1) {
@@ -111,7 +111,7 @@ class RemoteSource extends BaseSource {
     const response = await this.client.request({
       headers: {
         ...this.headers,
-        Range: `bytes=${offset}-${offset + length}`,
+        Range: `bytes=${offset}-${offset + length - 1}`,
       },
       signal,
     });
